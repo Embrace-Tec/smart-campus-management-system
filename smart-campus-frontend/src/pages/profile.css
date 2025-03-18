@@ -1,0 +1,32 @@
+/* Profile.css */
+body {
+    background-color: #121212; /* Dark background */
+    color: #ffffff; /* Light text color */
+}
+
+.profile-card {
+    background-color: #1e1e1e; /* Dark card background */
+    border: none; /* Remove border */
+    border-radius: 10px; /* Rounded corners */
+}
+
+.profile-image {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    border: 2px solid #007bff; /* Blue border for the profile image */
+}
+
+.change-photo-button {
+    color: #007bff; /* Blue color for the button */
+}
+
+.dark-input {
+    background-color: #2a2a2a; /* Dark input background */
+    color: #ffffff; /* Light text color */
+    border: 1px solid #444; /* Dark border */
+}
+
+.dark-input::placeholder {
+    color: #888; /* Placeholder color */
+}
