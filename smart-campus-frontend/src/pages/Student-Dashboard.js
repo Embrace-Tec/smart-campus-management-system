@@ -15,10 +15,9 @@ const StudentDashboard = () => {
     const [imagePreview, setImagePreview] = useState(null);
     const [loading, setLoading] = useState(true);
 
-    // Fetch user schedules and events
     const fetchUserSchedule = async () => {
         try {
-            const email = localStorage.getItem("email"); // Get email from localStorage
+            const email = localStorage.getItem("email");
             const response = await axios.get(`http://localhost:8081/smart-campus/api/v1/api/userSchedule-by-email`, {
                 params: { email },
             });
@@ -28,7 +27,6 @@ const StudentDashboard = () => {
         }
     };
 
-    // Fetch user profile
     const fetchUserProfile = async (email) => {
         try {
             const response = await axios.get(`http://localhost:8081/smart-campus/api/v1/api/auth/user-by-email`, {
@@ -41,7 +39,6 @@ const StudentDashboard = () => {
         }
     };
 
-    // Format schedules and events for the calendar
     const calendarEvents = [
         ...(userSchedule?.classSchedules || []).map(schedule => ({
             title: schedule.title,
@@ -57,7 +54,6 @@ const StudentDashboard = () => {
         })),
     ];
 
-    // Fetch data on component mount
     useEffect(() => {
         const email = localStorage.getItem("email");
         const fetchData = async () => {
