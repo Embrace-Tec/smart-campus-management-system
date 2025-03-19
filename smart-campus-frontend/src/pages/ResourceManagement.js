@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Container, Row, Col, Form, Button, ListGroup, Nav, Modal, Toast } from "react-bootstrap";
+import { Container, Row, Col, Form, Button, ListGroup, Nav, Modal } from "react-bootstrap";
 import { FaPlus, FaList, FaTrash, FaEdit, FaEye, FaCheck } from "react-icons/fa";
 import { getAllResources, createResource, updateResource, deleteResource } from "../service/ResourceManagementService";
 import { ToastContainer, toast } from "react-toastify";
@@ -129,6 +129,7 @@ const ResourceManagement = () => {
 
     return (
         <Container className="mt-5 text-light p-4 rounded">
+            <ToastContainer position="top-right" autoClose={3000} hideProgressBar={false} newestOnTop closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover />
             <Nav variant="tabs" activeKey={activeTab} className="mb-4">
                 <Nav.Item>
                     <Nav.Link eventKey="resources" onClick={() => setActiveTab("resources")} className="text-light bg-secondary">
@@ -161,16 +162,16 @@ const ResourceManagement = () => {
                                                 <small className="text-light">Availability: {resource.availability}</small>
                                             </div>
                                             <div>
-                                                <Button variant="outline-light" size="sm" className="me-2">
+                                                <Button variant="outline-light" size="sm" className="me-2" onClick={() => handleViewResource(resource)}>
                                                     <FaEye />
                                                 </Button>
-                                                <Button variant="outline-warning" size="sm" className="me-2">
+                                                <Button variant="outline-warning" size="sm" className="me-2" onClick={() => handleEditResource(resource)}>
                                                     <FaEdit />
                                                 </Button>
-                                                <Button variant="outline-danger" size="sm" className="me-2">
+                                                <Button variant="outline-danger" size="sm" className="me-2" onClick={() => handleDeleteResource(resource.id)}>
                                                     <FaTrash />
                                                 </Button>
-                                                <Button variant="outline-success" size="sm">
+                                                <Button variant="outline-success" size="sm" onClick={() => handleReserveResource(resource)}>
                                                     <FaCheck /> Reserve
                                                 </Button>
                                             </div>
@@ -229,6 +230,49 @@ const ResourceManagement = () => {
                     )}
                 </Col>
             </Row>
+
+            {/* Modal for Viewing/Reserving Resource */}
+            <Modal show={showModal} onHide={() => setShowModal(false)}>
+                <Modal.Header closeButton>
+                    <Modal.Title>{selectedResource?.name}</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <p><strong>Type:</strong> {selectedResource?.type}</p>
+                    <p><strong>Status:</strong> {selectedResource?.status}</p>
+                    <p><strong>Availability:</strong> {selectedResource?.availability}</p>
+                    {reservationDetails.resourceId && (
+                        <>
+                            <Form.Group className="mb-3">
+                                <Form.Label>Reserved By</Form.Label>
+                                <Form.Control
+                                    type="text"
+                                    placeholder="Enter your name"
+                                    value={reservationDetails.reservedBy}
+                                    onChange={(e) => setReservationDetails({ ...reservationDetails, reservedBy: e.target.value })}
+                                />
+                            </Form.Group>
+                            <Form.Group className="mb-3">
+                                <Form.Label>Reservation Time</Form.Label>
+                                <Form.Control
+                                    type="datetime-local"
+                                    value={reservationDetails.reservationTime}
+                                    onChange={(e) => setReservationDetails({ ...reservationDetails, reservationTime: e.target.value })}
+                                />
+                            </Form.Group>
+                        </>
+                    )}
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={() => setShowModal(false)}>
+                        Close
+                    </Button>
+                    {reservationDetails.resourceId && (
+                        <Button variant="primary" onClick={handleConfirmReservation}>
+                            Confirm Reservation
+                        </Button>
+                    )}
+                </Modal.Footer>
+            </Modal>
         </Container>
     );
 };

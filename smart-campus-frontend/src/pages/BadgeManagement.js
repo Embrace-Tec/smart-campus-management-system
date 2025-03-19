@@ -5,17 +5,16 @@ import {getAllBadges,getBadgeById,createOrUpdateBadge,deleteBadge} from "../serv
 import {getAllCourses} from "../service/CourseService";
 
 const CourseBadgeManagement = () => {
-    // State variables
-    const [courses, setCourses] = useState([]); // List of courses
-    const [badges, setBadges] = useState([]); // List of badges
-    const [selectedCourse, setSelectedCourse] = useState(null); // Selected course from dropdown
-    const [badgeName, setBadgeName] = useState(""); // Badge name input
-    const [badgeDescription, setBadgeDescription] = useState(""); // Badge description input
-    const [selectedBadge, setSelectedBadge] = useState(null); // Selected badge for editing/viewing
-    const [isEditing, setIsEditing] = useState(false); // Editing mode
-    const [notification, setNotification] = useState(""); // Notification message
-    const [showModal, setShowModal] = useState(false); // Modal visibility
-    const [activeTab, setActiveTab] = useState("badges"); // Active tab (badges or add-badge)
+    const [courses, setCourses] = useState([]);
+    const [badges, setBadges] = useState([]);
+    const [selectedCourse, setSelectedCourse] = useState(null);
+    const [badgeName, setBadgeName] = useState("");
+    const [badgeDescription, setBadgeDescription] = useState("");
+    const [selectedBadge, setSelectedBadge] = useState(null);
+    const [isEditing, setIsEditing] = useState(false);
+    const [notification, setNotification] = useState("");
+    const [showModal, setShowModal] = useState(false);
+    const [activeTab, setActiveTab] = useState("badges");
 
     useEffect(() => {
         const fetchBadges = async () => {
@@ -97,7 +96,6 @@ const CourseBadgeManagement = () => {
         setTimeout(() => setNotification(""), 3000);
     };
 
-    // Handle editing a badge
     const handleEditBadge = (badge) => {
         setBadgeName(badge.badgeName);
         setBadgeDescription(badge.description);

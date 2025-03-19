@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { toast } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css"; // Import Toastify CSS
 import { Container, Form, Button, Card, Image } from "react-bootstrap";
 
 const Profile = () => {
     const [user, setUser] = useState({
-        id: "", // Ensure the user object includes the ID
+        id: "",
         name: "",
         email: "",
         phone: "",
@@ -57,8 +58,8 @@ const Profile = () => {
                 toast.error("User ID is missing.");
                 return;
             }
-
-            await axios.put(`http://localhost:8081/smart-campus/api/v1/api/auth/users/${userId}`, user);
+            const response = await axios.put(`http://localhost:8081/smart-campus/api/v1/api/auth/users/${userId}`, user);
+            console.log("Profile updated:", response.data);
             toast.success("Profile updated successfully!");
         } catch (error) {
             toast.error("Failed to update profile.");
@@ -133,6 +134,9 @@ const Profile = () => {
                     </Form>
                 </Card.Body>
             </Card>
+
+            {/* Toast Container */}
+            <ToastContainer position="top-right" autoClose={3000} hideProgressBar closeOnClick />
         </Container>
     );
 };
