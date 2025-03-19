@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Container, Row, Col, Nav, Button, ListGroup, Spinner } from "react-bootstrap";
-import { Link, Outlet, useNavigate } from "react-router-dom"; // Add Outlet
+import { Link, Outlet, useNavigate } from "react-router-dom";
 import axios from "axios";
 import {
     FaTachometerAlt,
@@ -22,7 +22,7 @@ const Home = ({ role, setIsAuthenticated }) => {
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
 
-    const [showSettings, setShowSettings] = useState(false); // State for settings toggle
+    const [showSettings, setShowSettings] = useState(false);
 
     useEffect(() => {
         const storedRole = localStorage.getItem("role");
@@ -58,7 +58,6 @@ const Home = ({ role, setIsAuthenticated }) => {
     return (
         <Container fluid className="p-0" style={{ height: "100vh", background: "linear-gradient(135deg, #1E1E2F, #121212)", color: "white" }}>
             <Row className="h-100">
-                {/* Sidebar */}
                 <Col
                     md={2}
                     className={`sidebar d-flex flex-column align-items-start p-3 position-fixed bg-dark text-white shadow-lg ${sidebarOpen ? "d-block" : "d-none d-md-flex"}`}
@@ -154,7 +153,6 @@ const Home = ({ role, setIsAuthenticated }) => {
                     </Nav>
                 </Col>
 
-                {/* Main Content */}
                 <Col md={{ span: 10, offset: 2 }} className="main-content p-4" style={{ height: "100%", overflowY: "auto" }}>
                     <Button variant="outline-light" className="d-md-none mb-3" onClick={() => setSidebarOpen(true)}>
                         <FaBars /> Menu

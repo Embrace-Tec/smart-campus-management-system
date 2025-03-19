@@ -231,7 +231,6 @@ const ResourceManagement = () => {
                 </Col>
             </Row>
 
-            {/* Modal for Viewing/Reserving Resource */}
             <Modal show={showModal} onHide={() => setShowModal(false)}>
                 <Modal.Header closeButton>
                     <Modal.Title>{selectedResource?.name}</Modal.Title>

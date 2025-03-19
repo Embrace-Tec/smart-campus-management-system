@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Container, Row, Col, Form, Button, ListGroup, Nav, Modal, Toast } from "react-bootstrap";
 import { FaPlus, FaList, FaTrash, FaEdit, FaEye, FaCheck } from "react-icons/fa";
 import { ToastContainer, toast } from "react-toastify";
-import { assignBadgeToUser } from "../service/UserBadgeService"; // Service for API calls
+import { assignBadgeToUser } from "../service/UserBadgeService";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
 
@@ -18,7 +18,6 @@ const UserBadgeManagement = () => {
     const [selectedAssignment, setSelectedAssignment] = useState(null);
 
     useEffect(() => {
-        // Fetch users and badges
         const fetchUsers = async () => {
             try {
                 const response = await axios.get("http://localhost:8081/smart-campus/api/v1/api/auth/students");

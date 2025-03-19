@@ -27,7 +27,6 @@ const AdminDashboard = () => {
         }
     };
 
-    // Fetch lecturers
     const fetchLecturers = async () => {
         try {
             const response = await axios.get("http://localhost:8081/smart-campus/api/v1/api/auth/lecturers");
@@ -37,7 +36,6 @@ const AdminDashboard = () => {
         }
     };
 
-    // Fetch badges
     const fetchBadges = async () => {
         try {
             const response = await axios.get("http://localhost:8081/smart-campus/api/v1/api/badges");
@@ -47,7 +45,6 @@ const AdminDashboard = () => {
         }
     };
 
-    // Fetch courses
     const fetchCourses = async () => {
         try {
             const response = await axios.get("http://localhost:8081/smart-campus/api/v1/api/courses");
@@ -57,7 +54,6 @@ const AdminDashboard = () => {
         }
     };
 
-    // Fetch schedules
     const fetchSchedules = async () => {
         try {
             const response = await axios.get("http://localhost:8081/smart-campus/api/v1/api/schedules");
@@ -68,7 +64,6 @@ const AdminDashboard = () => {
         }
     };
 
-    // Fetch events
     const fetchEvents = async () => {
         try {
             const response = await axios.get("http://localhost:8081/smart-campus/api/v1/api/events");
@@ -121,7 +116,6 @@ const AdminDashboard = () => {
         <Container fluid className="bg-dark text-white min-vh-100 p-4">
             <h1 className="text-center mb-4 font-weight-bold">Admin Dashboard</h1>
 
-            {/* Dashboard Overview */}
             <Row className="mb-4">
                 <Col xs={12} md={6} lg={3} className="mb-3">
                     <Card className="bg-info text-white shadow-sm hover-shadow">
@@ -169,7 +163,6 @@ const AdminDashboard = () => {
                 </Col>
             </Row>
 
-            {/* Calendar Section */}
             <Row className="mb-4">
                 <Col>
                     <Card className="bg-secondary text-white shadow-sm hover-shadow">
@@ -194,7 +187,6 @@ const AdminDashboard = () => {
                 </Col>
             </Row>
 
-            {/* Students Section */}
             <Row className="mb-4">
                 <Col>
                     <Card className="bg-secondary text-white shadow-sm hover-shadow">
@@ -227,7 +219,6 @@ const AdminDashboard = () => {
                 </Col>
             </Row>
 
-            {/* Lecturers Section */}
             <Row className="mb-4">
                 <Col>
                     <Card className="bg-secondary text-white shadow-sm hover-shadow">
@@ -260,7 +251,6 @@ const AdminDashboard = () => {
                 </Col>
             </Row>
 
-            {/* Badges Section */}
             <Row className="mb-4">
                 <Col>
                     <Card className="bg-secondary text-white shadow-sm hover-shadow">
@@ -291,7 +281,6 @@ const AdminDashboard = () => {
                 </Col>
             </Row>
 
-            {/* Courses Section */}
             <Row className="mb-4">
                 <Col>
                     <Card className="bg-secondary text-white shadow-sm hover-shadow">

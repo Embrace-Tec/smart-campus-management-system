@@ -1,7 +1,6 @@
 import axios from "axios";
 
 const API_BASE_URL = "http://localhost:8081/smart-campus/api/v1/api/resources";
-// Fetch all resources
 export const getAllResources = async () => {
     try {
         const response = await axios.get(API_BASE_URL);
@@ -12,7 +11,6 @@ export const getAllResources = async () => {
     }
 };
 
-// Fetch a resource by ID
 export const getResourceById = async (id) => {
     try {
         const response = await axios.get(`${API_BASE_URL}/${id}`);
@@ -23,7 +21,6 @@ export const getResourceById = async (id) => {
     }
 };
 
-// Create a new resource
 export const createResource = async (resource) => {
     try {
         const response = await axios.post(API_BASE_URL, resource);
@@ -34,7 +31,6 @@ export const createResource = async (resource) => {
     }
 };
 
-// Update an existing resource
 export const updateResource = async (id, resource) => {
     try {
         const response = await axios.put(`${API_BASE_URL}/${id}`, resource);
@@ -45,7 +41,6 @@ export const updateResource = async (id, resource) => {
     }
 };
 
-// Delete a resource by ID
 export const deleteResource = async (id) => {
     try {
         const response = await axios.delete(`${API_BASE_URL}/${id}`);

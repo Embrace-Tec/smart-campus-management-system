@@ -16,10 +16,9 @@ const LecturerDashboard = () => {
     const [students, setStudents] = useState([]);
     const [loading, setLoading] = useState(true);
 
-    // Fetch courses assigned to the lecturer
     const fetchCourses = async () => {
         try {
-            const lecturerId = localStorage.getItem("userId"); // Assuming lecturer ID is stored in localStorage
+            const lecturerId = localStorage.getItem("userId");
             const response = await axios.get(`http://localhost:8081/smart-campus/api/v1/api/courses`);
             setCourses(response.data);
         } catch (error) {
@@ -27,7 +26,6 @@ const LecturerDashboard = () => {
         }
     };
 
-    // Fetch schedules for the lecturer
     const fetchSchedules = async () => {
         try {
             const lecturerId = localStorage.getItem("userId");
@@ -38,7 +36,6 @@ const LecturerDashboard = () => {
         }
     };
 
-    // Fetch events for the lecturer
     const fetchEvents = async () => {
         try {
             const lecturerId = localStorage.getItem("userId");
@@ -49,7 +46,6 @@ const LecturerDashboard = () => {
         }
     };
 
-    // Fetch students enrolled in the lecturer's courses
     const fetchStudents = async () => {
         try {
             const lecturerId = localStorage.getItem("userId");
@@ -100,7 +96,6 @@ const LecturerDashboard = () => {
         <Container fluid className="bg-dark text-white min-vh-100 p-4">
             <h1 className="text-center mb-4 font-weight-bold">Lecturer Dashboard</h1>
 
-            {/* Dashboard Overview */}
             <Row className="mb-4">
                 <Col xs={12} md={6} lg={3} className="mb-3">
                     <Card className="bg-info text-white shadow-sm hover-shadow">
@@ -126,7 +121,6 @@ const LecturerDashboard = () => {
                 </Col>
             </Row>
 
-            {/* Calendar Section */}
             <Row className="mb-4">
                 <Col>
                     <Card className="bg-secondary text-white shadow-sm hover-shadow">
@@ -151,7 +145,6 @@ const LecturerDashboard = () => {
                 </Col>
             </Row>
 
-            {/* Courses Section */}
             <Row className="mb-4">
                 <Col>
                     <Card className="bg-secondary text-white shadow-sm hover-shadow">
@@ -182,7 +175,6 @@ const LecturerDashboard = () => {
                 </Col>
             </Row>
 
-            {/* Students Section */}
             <Row className="mb-4">
                 <Col>
                     <Card className="bg-secondary text-white shadow-sm hover-shadow">

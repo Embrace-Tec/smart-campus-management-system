@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import {Container, Row, Col, Form, Button, ListGroup, Nav, Modal, Alert} from "react-bootstrap";
 import { FaTrash, FaEdit, FaEye, FaPlus, FaList } from "react-icons/fa";
-import { ToastContainer, toast } from "react-toastify"; // Import toast
-import "react-toastify/dist/ReactToastify.css"; // Import toast styles
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import {
     getAllSchedules,
     getScheduleById,
@@ -14,7 +14,6 @@ import { getAllBadges } from "../service/BadgeService";
 import { getAllResources } from "../service/ResourceManagementService";
 
 const ClassScheduleManagement = () => {
-    // State management
     const [schedules, setSchedules] = useState([]);
     const [lecturers, setLecturers] = useState([]);
     const [badges, setBadges] = useState([]);
@@ -120,7 +119,6 @@ const ClassScheduleManagement = () => {
                 toast.success(`New schedule added: ${response.name}`);
             }
 
-            // Reset form fields
             setName("");
             setSelectedLecturer("");
             setSelectedBadge("");
@@ -181,7 +179,6 @@ const ClassScheduleManagement = () => {
 
     return (
         <Container className="mt-5">
-            {/* Toast Container */}
             <ToastContainer
                 position="top-right"
                 autoClose={3000}
@@ -194,7 +191,7 @@ const ClassScheduleManagement = () => {
                 pauseOnHover
             />
 
-            {/* Tab Navigation */}
+            {/* Tab Nvigatin */}
             <Nav variant="tabs" activeKey={activeTab} className="mb-4 border-light">
                 <Nav.Item>
                     <Nav.Link eventKey="schedules" onClick={() => setActiveTab("schedules")}>

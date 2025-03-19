@@ -8,7 +8,6 @@ import { getAllResources } from "../service/ResourceManagementService";
 import { getAllBadges } from "../service/BadgeService";
 
 const EventManagement = () => {
-    // State management
     const [eventName, setEventName] = useState("");
     const [eventDate, setEventDate] = useState("");
     const [eventType, setEventType] = useState("class");
@@ -22,7 +21,8 @@ const EventManagement = () => {
     const [showModal, setShowModal] = useState(false);
     const [isEditing, setIsEditing] = useState(false);
 
-    // Fetch events, resources, and badges on component mount
+    const userRole = localStorage.getItem("role");
+
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -40,9 +40,14 @@ const EventManagement = () => {
         fetchData();
     }, []);
 
-    // Form submission handler
     const handleAddOrUpdateEvent = async (e) => {
         e.preventDefault();
+
+        if (userRole !== "ADMIN" && userRole !== "LECTURER") {
+            toast.error("You do not have permission to perform this action.");
+            return;
+        }
+
         if (!eventName || !eventDate || !resourceName || !badge) {
             toast.warning("Please fill in all fields.");
             return;
@@ -71,7 +76,6 @@ const EventManagement = () => {
                 toast.success(`New event added: ${eventName}`);
             }
 
-            // Reset form fields
             setEventName("");
             setEventDate("");
             setEventType("class");
@@ -86,8 +90,12 @@ const EventManagement = () => {
         }
     };
 
-    // Delete an event
     const handleDeleteEvent = async (id) => {
+        if (userRole !== "ADMIN" && userRole !== "LECTURER") {
+            toast.error("You do not have permission to perform this action.");
+            return;
+        }
+
         try {
             await deleteEvent(id);
             setEvents(events.filter((event) => event.id !== id));
@@ -98,14 +106,17 @@ const EventManagement = () => {
         }
     };
 
-    // View an event
     const handleViewEvent = (event) => {
         setSelectedEvent(event);
         setShowModal(true);
     };
 
-    // Edit an event
     const handleEditEvent = (event) => {
+        if (userRole !== "ADMIN" && userRole !== "LECTURER") {
+            toast.error("You do not have permission to perform this action.");
+            return;
+        }
+
         setEventName(event.name);
         setEventDate(event.date);
         setEventType(event.type);
@@ -116,8 +127,12 @@ const EventManagement = () => {
         setActiveTab("add");
     };
 
-    // Add a new event
     const handleAddNewEvent = () => {
+        if (userRole !== "ADMIN" && userRole !== "LECTURER") {
+            toast.error("You do not have permission to perform this action.");
+            return;
+        }
+
         setEventName("");
         setEventDate("");
         setEventType("class");
@@ -128,7 +143,6 @@ const EventManagement = () => {
         setActiveTab("add");
     };
 
-    // Random event reminder
     useEffect(() => {
         const interval = setInterval(() => {
             if (events.length > 0) {
@@ -139,7 +153,7 @@ const EventManagement = () => {
                         {new Date(randomEvent.date).toLocaleString()}
                     </div>,
                     {
-                        autoClose: 10000, // Close after 10 seconds
+                        autoClose: 10000,
                         position: 'bottom-right',
                     }
                 );
@@ -151,21 +165,21 @@ const EventManagement = () => {
 
     return (
         <Container className="mt-5">
-            {/* Toast Container */}
             <ToastContainer />
 
-            {/* Tab Navigation */}
             <Nav variant="tabs" activeKey={activeTab} className="mb-4 border-light">
                 <Nav.Item>
                     <Nav.Link eventKey="events" onClick={() => setActiveTab("events")}>
                         <FaList className="me-2" /> Scheduled Events
                     </Nav.Link>
                 </Nav.Item>
-                <Nav.Item>
-                    <Nav.Link eventKey="add" onClick={handleAddNewEvent}>
-                        <FaCalendarPlus className="me-2" /> {isEditing ? "Edit Event" : "Add Event"}
-                    </Nav.Link>
-                </Nav.Item>
+                {(userRole === "ADMIN" || userRole === "LECTURER") && (
+                    <Nav.Item>
+                        <Nav.Link eventKey="add" onClick={handleAddNewEvent}>
+                            <FaCalendarPlus className="me-2" /> {isEditing ? "Edit Event" : "Add Event"}
+                        </Nav.Link>
+                    </Nav.Item>
+                )}
             </Nav>
 
             <Row>
@@ -192,12 +206,16 @@ const EventManagement = () => {
                                                 <Button variant="outline-info" size="sm" className="me-2" onClick={() => handleViewEvent(event)}>
                                                     <FaEye />
                                                 </Button>
-                                                <Button variant="outline-warning" size="sm" className="me-2" onClick={() => handleEditEvent(event)}>
-                                                    <FaEdit />
-                                                </Button>
-                                                <Button variant="outline-danger" size="sm" onClick={() => handleDeleteEvent(event.id)}>
-                                                    <FaTrash />
-                                                </Button>
+                                                {(userRole === "ADMIN" || userRole === "LECTURER") && (
+                                                    <>
+                                                        <Button variant="outline-warning" size="sm" className="me-2" onClick={() => handleEditEvent(event)}>
+                                                            <FaEdit />
+                                                        </Button>
+                                                        <Button variant="outline-danger" size="sm" onClick={() => handleDeleteEvent(event.id)}>
+                                                            <FaTrash />
+                                                        </Button>
+                                                    </>
+                                                )}
                                             </div>
                                         </ListGroup.Item>
                                     ))}
@@ -280,7 +298,6 @@ const EventManagement = () => {
                 </Col>
             </Row>
 
-            {/* View Event Modal */}
             <Modal show={showModal} onHide={() => setShowModal(false)} dialogClassName="bg-dark">
                 <Modal.Header closeButton>
                     <Modal.Title>Event Details</Modal.Title>
@@ -303,7 +320,6 @@ const EventManagement = () => {
                 </Modal.Footer>
             </Modal>
         </Container>
-
     );
 };
 

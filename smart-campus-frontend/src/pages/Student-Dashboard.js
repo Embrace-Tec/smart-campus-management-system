@@ -79,7 +79,6 @@ const StudentDashboard = () => {
         <Container fluid className="bg-dark text-white min-vh-100 p-4">
             <h1 className="text-center mb-4 font-weight-bold">Student Dashboard</h1>
 
-            {/* Student Information */}
             <Row className="mb-4">
                 <Col>
                     <Card className="bg-secondary text-white shadow-sm hover-shadow">
@@ -98,7 +97,6 @@ const StudentDashboard = () => {
                                         style={{ width: "100px", height: "100px", objectFit: "cover" }}
                                     />
                                 </div>
-                                {/* User Details */}
                                 <Table striped bordered hover variant="dark">
                                     <tbody>
                                     <tr>
@@ -121,7 +119,6 @@ const StudentDashboard = () => {
                 </Col>
             </Row>
 
-            {/* Calendar Section */}
             <Row className="mb-4">
                 <Col>
                     <Card className="bg-secondary text-white shadow-sm hover-shadow">
@@ -146,7 +143,6 @@ const StudentDashboard = () => {
                 </Col>
             </Row>
 
-            {/* Class Schedules Section */}
             <Row className="mb-4">
                 <Col>
                     <Card className="bg-secondary text-white shadow-sm hover-shadow">
@@ -180,7 +176,6 @@ const StudentDashboard = () => {
                 </Col>
             </Row>
 
-            {/* Events Section */}
             <Row className="mb-4">
                 <Col>
                     <Card className="bg-secondary text-white shadow-sm hover-shadow">

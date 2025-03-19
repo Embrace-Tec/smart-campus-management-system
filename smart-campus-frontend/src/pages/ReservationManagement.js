@@ -64,7 +64,6 @@ const ReservationManagement = () => {
         }
     };
 
-    // Handle adding or updating a reservation
     const handleAddOrUpdateReservation = async (e) => {
         e.preventDefault();
         if (!selectedUser || !selectedResource || !startTime || !endTime) {
@@ -72,7 +71,6 @@ const ReservationManagement = () => {
             return;
         }
 
-        // Find the selected user and resource details
         const user = users.find((user) => user.userID === parseInt(selectedUser));
         const resource = resources.find((resource) => resource.resourceID === parseInt(selectedResource));
 
@@ -106,7 +104,7 @@ const ReservationManagement = () => {
                 await ReservationService.createReservation(newReservation);
                 showToastNotification("New reservation added.", "success");
             }
-            fetchReservations(); // Refresh reservations list
+            fetchReservations();
         } catch (error) {
             console.error("Error saving reservation:", error);
             showToastNotification("Error saving reservation.", "danger");
@@ -123,22 +121,20 @@ const ReservationManagement = () => {
         setStatus("ACTIVE");
         setSelectedReservation(null);
         setIsEditing(false);
-        setActiveTab("reservations"); // Switch back to the reservations tab
+        setActiveTab("reservations");
     };
 
-    // Handle deleting a reservation
     const handleDeleteReservation = async (reservationID) => {
         try {
             await ReservationService.deleteReservation(reservationID);
             showToastNotification("Reservation deleted.", "success");
-            fetchReservations(); // Refresh reservations list
+            fetchReservations();
         } catch (error) {
             console.error("Error deleting reservation:", error);
             showToastNotification("Error deleting reservation.", "danger");
         }
     };
 
-    // Handle editing a reservation
     const handleEditReservation = (reservation) => {
         setSelectedUser(reservation.user.id.toString());
         setSelectedResource(reservation.resource.id.toString());
@@ -147,22 +143,19 @@ const ReservationManagement = () => {
         setStatus(reservation.status);
         setSelectedReservation(reservation);
         setIsEditing(true);
-        setActiveTab("add-reservation"); // Switch to the add-reservation tab
+        setActiveTab("add-reservation");
     };
 
-    // Handle viewing a reservation
     const handleViewReservation = (reservation) => {
         setSelectedReservation(reservation);
         setShowModal(true);
     };
 
-    // Handle adding a new reservation
     const handleAddNewReservation = () => {
         resetForm();
-        setActiveTab("add-reservation"); // Switch to the add-reservation tab
+        setActiveTab("add-reservation");
     };
 
-    // Show toast notification
     const showToastNotification = (message, variant) => {
         setToastMessage(message);
         setToastVariant(variant);
@@ -175,7 +168,6 @@ const ReservationManagement = () => {
 
     return (
         <Container className="mt-5 p-4 rounded">
-            {/* Tab Navigation */}
             <Nav variant="tabs" activeKey={activeTab} className="mb-4">
                 <Nav.Item>
                     <Nav.Link eventKey="reservations" onClick={() => setActiveTab("reservations")}>
@@ -189,7 +181,6 @@ const ReservationManagement = () => {
                 </Nav.Item>
             </Nav>
 
-            {/* Reservations Tab */}
             {activeTab === "reservations" && (
                 <>
                     <h2 className="mb-3">Reservations</h2>
@@ -229,7 +220,6 @@ const ReservationManagement = () => {
                 </>
             )}
 
-            {/* Add/Edit Reservation Tab */}
             {activeTab === "add-reservation" && (
                 <>
                     <h2 className="mb-3">{isEditing ? "Edit Reservation" : "Add Reservation"}</h2>
@@ -278,7 +268,6 @@ const ReservationManagement = () => {
                 </>
             )}
 
-            {/* View Reservation Modal */}
             <Modal show={showModal} onHide={() => setShowModal(false)}>
                 <Modal.Header closeButton>
                     <Modal.Title>Reservation Details</Modal.Title>

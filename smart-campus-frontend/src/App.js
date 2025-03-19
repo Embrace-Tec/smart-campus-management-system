@@ -32,7 +32,6 @@ const App = () => {
     return (
         <Router>
             <Routes>
-                {/* Unauthenticated routes */}
                 {!isAuthenticated ? (
                     <>
                         <Route path="/login" element={<Login setIsAuthenticated={setIsAuthenticated} setRole={setRole} />} />
@@ -40,7 +39,6 @@ const App = () => {
                     </>
                 ) : (
                     <>
-                        {/* Role-based routes */}
                         {role === "STUDENT" && (
                             <Route path="/" element={<Home role={role} setIsAuthenticated={setIsAuthenticated} />}>
                                 <Route index element={<Navigate to="/events" />} />

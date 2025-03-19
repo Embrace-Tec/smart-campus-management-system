@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Container, Row, Col, Form, Button, ListGroup, Alert, Badge, Modal, Nav, Dropdown } from "react-bootstrap";
 import { FaTrash, FaEdit, FaEye, FaPlus, FaList } from "react-icons/fa";
-import {getAllBadges,getBadgeById,createOrUpdateBadge,deleteBadge} from "../service/BadgeService";
-import {getAllCourses} from "../service/CourseService";
+import { getAllBadges, getBadgeById, createOrUpdateBadge, deleteBadge } from "../service/BadgeService";
+import { getAllCourses } from "../service/CourseService";
 
 const CourseBadgeManagement = () => {
     const [courses, setCourses] = useState([]);
@@ -15,6 +15,8 @@ const CourseBadgeManagement = () => {
     const [notification, setNotification] = useState("");
     const [showModal, setShowModal] = useState(false);
     const [activeTab, setActiveTab] = useState("badges");
+
+    const userRole = localStorage.getItem("role");
 
     useEffect(() => {
         const fetchBadges = async () => {
@@ -41,6 +43,12 @@ const CourseBadgeManagement = () => {
 
     const handleAddOrUpdateBadge = async (e) => {
         e.preventDefault();
+
+        if (userRole !== "ADMIN" && userRole !== "LECTURER") {
+            alert("You do not have permission to perform this action.");
+            return;
+        }
+
         if (!badgeName || !badgeDescription || !selectedCourse) {
             alert("Please fill in all fields and select a course.");
             return;
@@ -55,7 +63,6 @@ const CourseBadgeManagement = () => {
 
         try {
             if (isEditing) {
-                // Update existing badge
                 const updatedBadge = await createOrUpdateBadge(newBadge);
                 const updatedBadges = badges.map((badge) =>
                     badge.badgeID === selectedBadge.badgeID ? updatedBadge : badge
@@ -63,7 +70,6 @@ const CourseBadgeManagement = () => {
                 setBadges(updatedBadges);
                 setNotification(`Badge updated: ${badgeName}`);
             } else {
-                // Create new badge
                 const createdBadge = await createOrUpdateBadge(newBadge);
                 setBadges([...badges, createdBadge]);
                 setNotification(`New badge added: ${badgeName}`);
@@ -74,16 +80,19 @@ const CourseBadgeManagement = () => {
 
         setTimeout(() => setNotification(""), 3000);
 
-        // Reset form fields
         setBadgeName("");
         setBadgeDescription("");
         setSelectedBadge(null);
         setIsEditing(false);
-        setActiveTab("badges"); // Switch back to the badges tab
+        setActiveTab("badges");
     };
 
-    // Handle deleting a badge
     const handleDeleteBadge = async (badgeID) => {
+        if (userRole !== "ADMIN" && userRole !== "LECTURER") {
+            alert("You do not have permission to perform this action.");
+            return;
+        }
+
         try {
             await deleteBadge(badgeID);
             const updatedBadges = badges.filter((badge) => badge.badgeID !== badgeID);
@@ -97,57 +106,63 @@ const CourseBadgeManagement = () => {
     };
 
     const handleEditBadge = (badge) => {
+        if (userRole !== "ADMIN" && userRole !== "LECTURER") {
+            alert("You do not have permission to perform this action.");
+            return;
+        }
+
         setBadgeName(badge.badgeName);
         setBadgeDescription(badge.description);
         setSelectedBadge(badge);
         setIsEditing(true);
-        setActiveTab("add-badge"); // Switch to the add-badge tab
+        setActiveTab("add-badge");
     };
 
-    // Handle viewing a badge
     const handleViewBadge = (badge) => {
         setSelectedBadge(badge);
         setShowModal(true);
     };
 
-    // Handle adding a new badge
     const handleAddNewBadge = () => {
+        if (userRole !== "ADMIN" && userRole !== "LECTURER") {
+            alert("You do not have permission to perform this action.");
+            return;
+        }
+
         setBadgeName("");
         setBadgeDescription("");
         setSelectedBadge(null);
         setIsEditing(false);
-        setActiveTab("add-badge"); // Switch to the add-badge tab
+        setActiveTab("add-badge");
     };
 
-    // Handle selecting a course from the dropdown
     const handleSelectCourse = (course) => {
         setSelectedCourse(course);
     };
 
     return (
         <Container className="mt-5">
-            {/* Tab Navigation */}
             <Nav variant="tabs" activeKey={activeTab} className="mb-4 border-light">
                 <Nav.Item>
                     <Nav.Link eventKey="badges" onClick={() => setActiveTab("badges")}>
                         <FaList className="me-2" /> Badges
                     </Nav.Link>
                 </Nav.Item>
-                <Nav.Item>
-                    <Nav.Link eventKey="add-badge" onClick={handleAddNewBadge}>
-                        <FaPlus className="me-2" /> {isEditing ? "Edit Badge" : "Add Badge"}
-                    </Nav.Link>
-                </Nav.Item>
+                {(userRole === "ADMIN" || userRole === "LECTURER") && (
+                    <Nav.Item>
+                        <Nav.Link eventKey="add-badge" onClick={handleAddNewBadge}>
+                            <FaPlus className="me-2" /> {isEditing ? "Edit Badge" : "Add Badge"}
+                        </Nav.Link>
+                    </Nav.Item>
+                )}
             </Nav>
 
-            {/* Notification */}
             {notification && (
                 <Alert variant="info" className="text-center shadow-sm">
                     {notification}
                 </Alert>
             )}
 
-            {/* Badges Tab */}
             {activeTab === "badges" && (
                 <>
                     <h2 className="mb-3 text-light">Badges</h2>
@@ -175,21 +190,25 @@ const CourseBadgeManagement = () => {
                                         >
                                             <FaEye />
                                         </Button>
-                                        <Button
-                                            variant="outline-warning"
-                                            size="sm"
-                                            className="me-2"
-                                            onClick={() => handleEditBadge(badge)}
-                                        >
-                                            <FaEdit />
-                                        </Button>
-                                        <Button
-                                            variant="outline-danger"
-                                            size="sm"
-                                            onClick={() => handleDeleteBadge(badge.badgeID)}
-                                        >
-                                            <FaTrash />
-                                        </Button>
+                                        {(userRole === "ADMIN" || userRole === "LECTURER") && (
+                                            <>
+                                                <Button
+                                                    variant="outline-warning"
+                                                    size="sm"
+                                                    className="me-2"
+                                                    onClick={() => handleEditBadge(badge)}
+                                                >
+                                                    <FaEdit />
+                                                </Button>
+                                                <Button
+                                                    variant="outline-danger"
+                                                    size="sm"
+                                                    onClick={() => handleDeleteBadge(badge.badgeID)}
+                                                >
+                                                    <FaTrash />
+                                                </Button>
+                                            </>
+                                        )}
                                     </div>
                                 </ListGroup.Item>
                             ))}
@@ -198,12 +217,10 @@ const CourseBadgeManagement = () => {
                 </>
             )}
 
-            {/* Add/Edit Badge Tab */}
             {activeTab === "add-badge" && (
                 <>
                     <h2 className="mb-3 text-light">{isEditing ? "Edit Badge" : "Add Badge"}</h2>
                     <Form onSubmit={handleAddOrUpdateBadge} className="shadow-sm p-4 rounded bg-dark text-light">
-                        {/* Course Dropdown */}
                         <Form.Group className="mb-3">
                             <Form.Label>Choose Course</Form.Label>
                             <Dropdown>
@@ -254,7 +271,6 @@ const CourseBadgeManagement = () => {
                 </>
             )}
 
-            {/* View Badge Modal */}
             <Modal show={showModal} onHide={() => setShowModal(false)} dialogClassName="bg-dark">
                 <Modal.Header closeButton>
                     <Modal.Title>Badge Details</Modal.Title>
@@ -275,7 +291,6 @@ const CourseBadgeManagement = () => {
                 </Modal.Footer>
             </Modal>
         </Container>
-
     );
 };
 

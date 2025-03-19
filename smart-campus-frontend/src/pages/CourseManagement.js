@@ -5,7 +5,6 @@ import { getAllCourses, getCourseById, createOrUpdateCourse, deleteCourse } from
 import { getAllLectures } from "../service/UserManagementService";
 
 const CourseManagement = () => {
-    // State variables
     const [courseName, setCourseName] = useState("");
     const [description, setDescription] = useState("");
     const [credits, setCredits] = useState(0);
@@ -19,6 +18,8 @@ const CourseManagement = () => {
     const [isEditing, setIsEditing] = useState(false);
     const [departments, setDepartments] = useState([]);
     const [lecturers, setLecturers] = useState([]);
+
+    const userRole = localStorage.getItem("role");
 
     useEffect(() => {
         fetchCourses();
@@ -37,7 +38,7 @@ const CourseManagement = () => {
     const fetchDepartmentsAndLecturers = async () => {
         const departmentsData = [
             { department: "Computer Science" },
-            {department: "Information Technology" },
+            { department: "Information Technology" },
             { department: "Software Engineering" }
         ];
         try {
@@ -51,6 +52,11 @@ const CourseManagement = () => {
 
     const handleAddOrUpdateCourse = async (e) => {
         e.preventDefault();
+        if (userRole !== "ADMIN" && userRole !== "LECTURER") {
+            alert("You do not have permission to perform this action.");
+            return;
+        }
+
         if (!courseName || !description || !credits || !departmentID || !assignedLecturer) {
             alert("Please fill in all fields.");
             return;
@@ -67,7 +73,7 @@ const CourseManagement = () => {
                 credits,
                 department: departmentID,
                 assignedLecturer: {
-                    id: selectedLecturerObject.id, // Use the lecturer's id
+                    id: selectedLecturerObject.id,
                     name: assignedLecturer
                 }
             };
@@ -99,6 +105,11 @@ const CourseManagement = () => {
     };
 
     const handleDeleteCourse = async (courseID) => {
+        if (userRole !== "ADMIN" && userRole !== "LECTURER") {
+            alert("You do not have permission to perform this action.");
+            return;
+        }
+
         try {
             await deleteCourse(courseID);
             setNotification("Course deleted.");
@@ -114,6 +125,11 @@ const CourseManagement = () => {
     };
 
     const handleEditCourse = (course) => {
+        if (userRole !== "ADMIN" && userRole !== "LECTURER") {
+            alert("You do not have permission to perform this action.");
+            return;
+        }
+
         setCourseName(course.courseName);
         setDescription(course.description);
         setCredits(course.credits);
@@ -125,6 +141,12 @@ const CourseManagement = () => {
     };
 
     const handleAddNewCourse = () => {
+        // Check if the user has permission to add courses
+        if (userRole !== "ADMIN" && userRole !== "LECTURER") {
+            alert("You do not have permission to perform this action.");
+            return;
+        }
+
         setCourseName("");
         setDescription("");
         setCredits(0);
@@ -137,18 +159,19 @@ const CourseManagement = () => {
 
     return (
         <Container className="mt-5 text-light">
-            {/* Tab Navigation */}
             <Nav variant="tabs" activeKey={activeTab} className="mb-4">
                 <Nav.Item>
                     <Nav.Link eventKey="courses" onClick={() => setActiveTab("courses")}>
                         <FaList className="me-2" /> Courses
                     </Nav.Link>
                 </Nav.Item>
-                <Nav.Item>
-                    <Nav.Link eventKey="add" onClick={handleAddNewCourse}>
-                        <FaBook className="me-2" /> {isEditing ? "Edit Course" : "Add Course"}
-                    </Nav.Link>
-                </Nav.Item>
+                {(userRole === "ADMIN" || userRole === "LECTURER") && (
+                    <Nav.Item>
+                        <Nav.Link eventKey="add" onClick={handleAddNewCourse}>
+                            <FaBook className="me-2" /> {isEditing ? "Edit Course" : "Add Course"}
+                        </Nav.Link>
+                    </Nav.Item>
+                )}
             </Nav>
 
             <Row>
@@ -173,12 +196,16 @@ const CourseManagement = () => {
                                                 <Button variant="outline-info" size="sm" className="me-2" onClick={() => handleViewCourse(course)}>
                                                     <FaEye />
                                                 </Button>
-                                                <Button variant="outline-warning" size="sm" className="me-2" onClick={() => handleEditCourse(course)}>
-                                                    <FaEdit />
-                                                </Button>
-                                                <Button variant="outline-danger" size="sm" onClick={() => handleDeleteCourse(course.courseID)}>
-                                                    <FaTrash />
-                                                </Button>
+                                                {(userRole === "ADMIN" || userRole === "LECTURER") && (
+                                                    <>
+                                                        <Button variant="outline-warning" size="sm" className="me-2" onClick={() => handleEditCourse(course)}>
+                                                            <FaEdit />
+                                                        </Button>
+                                                        <Button variant="outline-danger" size="sm" onClick={() => handleDeleteCourse(course.courseID)}>
+                                                            <FaTrash />
+                                                        </Button>
+                                                    </>
+                                                )}
                                             </div>
                                         </ListGroup.Item>
                                     ))}
@@ -275,7 +302,7 @@ const CourseManagement = () => {
                             <p><strong>Description:</strong> {selectedCourse.description}</p>
                             <p><strong>Credits:</strong> {selectedCourse.credits}</p>
                             <p><strong>Department ID:</strong> {selectedCourse.departmentID}</p>
-                            <p><strong>Lecturer:</strong> {selectedCourse.assignedLecturer.name}</p> {/* Access name here */}
+                            <p><strong>Lecturer:</strong> {selectedCourse.assignedLecturer.name}</p>
                         </>
                     )}
                 </Modal.Body>

@@ -93,7 +93,6 @@ const UserManagement = () => {
         }
     };
 
-    // Handle deleting a user
     const handleDeleteUser = (userID) => {
         const updatedUsers = users.filter((user) => user.userID !== userID);
         setUsers(updatedUsers);
@@ -133,10 +132,8 @@ const UserManagement = () => {
 
     return (
         <Container className="mt-5 p-4 rounded text-light">
-            {/* Toast Container */}
             <ToastContainer position="top-right" autoClose={3000} hideProgressBar={false} newestOnTop closeOnClick />
 
-            {/* Tab Navigation */}
             <Nav variant="tabs" activeKey={activeTab} className="mb-4">
                 <Nav.Item>
                     <Nav.Link eventKey="users" onClick={() => setActiveTab("users")}>
@@ -150,7 +147,6 @@ const UserManagement = () => {
                 </Nav.Item>
             </Nav>
 
-            {/* Users Tab */}
             {activeTab === "users" && (
                 <>
                     <h2 className="mb-3 text-light">Users</h2>
@@ -187,7 +183,6 @@ const UserManagement = () => {
                 </>
             )}
 
-            {/* Add/Edit User Tab */}
             {activeTab === "add-user" && (
                 <>
                     <h2 className="mb-3 text-light">{isEditing ? "Edit User" : "Add User"}</h2>
@@ -221,7 +216,6 @@ const UserManagement = () => {
                             <Form.Control type="text" className="bg-dark text-light" value={phone} onChange={(e) => setPhone(e.target.value)} placeholder="Enter phone number" />
                         </Form.Group>
 
-                        {/* Profile Picture Field */}
                         <Form.Group className="mb-3">
                             <Form.Label>Profile Picture</Form.Label>
                             <div className="d-flex flex-column align-items-start">
@@ -247,7 +241,6 @@ const UserManagement = () => {
                 </>
             )}
 
-            {/* View User Modal */}
             <Modal show={showModal} onHide={() => setShowModal(false)}>
                 <Modal.Header closeButton className="bg-dark text-light">
                     <Modal.Title>User Details</Modal.Title>
