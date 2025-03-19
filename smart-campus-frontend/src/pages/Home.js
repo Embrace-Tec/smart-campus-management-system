@@ -12,7 +12,7 @@ import {
     FaClock,
     FaBookmark,
     FaGraduationCap,
-    FaSignOutAlt, FaList, FaTimes, FaTimesCircle,
+    FaSignOutAlt, FaList, FaTimes, FaTimesCircle, FaPen,
 } from "react-icons/fa";
 import { toast } from "react-toastify";
 
@@ -84,6 +84,12 @@ const Home = ({ role, setIsAuthenticated }) => {
                             </Nav.Link>
                         )}
 
+                        {(role === "STUDENT") && (
+                            <Nav.Link as={Link} to="/student-dashboard" className="nav-link text-white py-3 px-3 rounded shadow-sm mb-2 d-flex align-items-center sidebar-item">
+                                <FaTachometerAlt className="me-2" /> Dashboard
+                            </Nav.Link>
+                        )}
+
                         <Nav.Link as={Link} to="events" className="nav-link text-white py-3 px-3 rounded shadow-sm mb-2 d-flex align-items-center sidebar-item">
                             <FaCalendarAlt className="me-2" /> Events
                         </Nav.Link>
@@ -137,6 +143,11 @@ const Home = ({ role, setIsAuthenticated }) => {
                             </Nav.Link>
                         )}
 
+                        {(role === "LECTURER" || role === "ADMIN") && (
+                            <Nav.Link as={Link} to="userbadge" className="nav-link text-white py-3 px-3 rounded shadow-sm mb-2 d-flex align-items-center sidebar-item">
+                                <FaPen className="me-2" /> User Badge
+                            </Nav.Link>
+                        )}
                         <Button variant="outline-light" className="d-flex align-items-center sidebar-item mt-auto" onClick={handleLogout}>
                             <FaSignOutAlt className="me-2" /> Logout
                         </Button>

@@ -22,6 +22,7 @@ const StudentDashboard = () => {
                 params: { email },
             });
             setUserSchedule(response.data);
+            console.log(response.data);
         } catch (error) {
             toast.error("Error fetching user schedule.");
         }
@@ -41,15 +42,15 @@ const StudentDashboard = () => {
 
     const calendarEvents = [
         ...(userSchedule?.classSchedules || []).map(schedule => ({
-            title: schedule.title,
+            title: schedule.name,
             start: new Date(schedule.startTime),
             end: new Date(schedule.endTime),
             allDay: false,
         })),
         ...(userSchedule?.events || []).map(event => ({
-            title: event.title,
-            start: new Date(event.startTime),
-            end: new Date(event.endTime),
+            title: event.name,
+            start: new Date(event.date),
+            end: new Date(new Date(event.date).getTime() + 8 * 60 * 60 * 1000),
             allDay: event.allDay || false,
         })),
     ];
@@ -166,7 +167,7 @@ const StudentDashboard = () => {
                                     <tbody>
                                     {userSchedule?.classSchedules?.map((schedule) => (
                                         <tr key={schedule.id}>
-                                            <td>{schedule.title}</td>
+                                            <td>{schedule.name}</td>
                                             <td>{new Date(schedule.startTime).toLocaleString()}</td>
                                             <td>{new Date(schedule.endTime).toLocaleString()}</td>
                                         </tr>
@@ -200,9 +201,9 @@ const StudentDashboard = () => {
                                     <tbody>
                                     {userSchedule?.events?.map((event) => (
                                         <tr key={event.id}>
-                                            <td>{event.title}</td>
-                                            <td>{new Date(event.startTime).toLocaleString()}</td>
-                                            <td>{new Date(event.endTime).toLocaleString()}</td>
+                                            <td>{event.name}</td>
+                                            <td>{new Date(event.date).toLocaleString()}</td>
+                                            <td>{new Date(new Date(event.date).setHours(new Date(event.date).getHours() + 8)).toLocaleString()}</td>
                                         </tr>
                                     ))}
                                     </tbody>

@@ -85,6 +85,7 @@ const App = () => {
                                 <Route path="userbadge" element={<UserBadgeManagement />} />
                                 <Route path="profile" element={<ProfileManagement />} />
                                 <Route path="admin-dashboard" element={<AdminDashboard />} />
+                                <Route path="userbadge" element={<UserBadgeManagement />} />
                                 <Route path="*" element={<Navigate to="/admin-dashboard" />} />
                             </Route>
                         )}

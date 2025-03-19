@@ -81,7 +81,6 @@ public class AuthController {
     public ResponseEntity<?> getAllLecturers() {
         System.out.println("Getting lecturers");
         try {
-            // Pass Role.LECTURER instead of the string "LECTURER"
             List<User> lecturers = authService.getUsersByRole(Role.LECTURER);
             return ResponseEntity.ok(lecturers);
         } catch (Exception e) {
@@ -112,6 +111,7 @@ public class AuthController {
 
     @GetMapping("/userSchedule-by-email")
     public ResponseEntity<?> getUserScheduleByEmail(@RequestParam String email) {
+        System.out.println("Getting user by email: " + email);
         User user = authService.getUserByEmail(email);
         if (user != null) {
             return ResponseEntity.ok(user);
