@@ -18,7 +18,6 @@ const AdminDashboard = () => {
     const [events, setEvents] = useState([]);
     const [loading, setLoading] = useState(true);
 
-    // Fetch students
     const fetchStudents = async () => {
         try {
             const response = await axios.get("http://localhost:8081/smart-campus/api/v1/api/auth/students");

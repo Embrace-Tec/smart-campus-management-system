@@ -60,23 +60,21 @@ const LecturerDashboard = () => {
         }
     };
 
-    // Format schedules and events for the calendar
     const calendarEvents = [
         ...schedules.map(schedule => ({
-            title: schedule.title,
+            title: schedule.name,
             start: new Date(schedule.startTime),
             end: new Date(schedule.endTime),
             allDay: false,
         })),
         ...events.map(event => ({
-            title: event.title,
-            start: new Date(event.startTime),
-            end: new Date(event.endTime),
+            title: event.name,
+            start: new Date(event.date),
+            end: new Date(new Date(event.date).getTime() + 8 * 60 * 60 * 1000),
             allDay: event.allDay || false,
         })),
     ];
 
-    // Fetch all data on component mount
     useEffect(() => {
         const fetchData = async () => {
             await Promise.all([

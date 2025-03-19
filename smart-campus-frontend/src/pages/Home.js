@@ -69,9 +69,20 @@ const Home = ({ role, setIsAuthenticated }) => {
                     </Button>
                     <h4 className="text-center w-100 mb-4 fw-bold">Dashboard</h4>
                     <Nav className="flex-column w-100">
-                        <Nav.Link as={Link} to="/" className="nav-link text-white py-3 px-3 rounded shadow-sm mb-2 d-flex align-items-center sidebar-item">
+
+                        {(role === "ADMIN") && (
+
+                            <Nav.Link as={Link} to="/admin-dashboard" className="nav-link text-white py-3 px-3 rounded shadow-sm mb-2 d-flex align-items-center sidebar-item">
                             <FaTachometerAlt className="me-2" /> Dashboard
                         </Nav.Link>
+                        )}
+
+
+                        {(role === "LECTURER") && (
+                            <Nav.Link as={Link} to="/lecturer-dashboard" className="nav-link text-white py-3 px-3 rounded shadow-sm mb-2 d-flex align-items-center sidebar-item">
+                                <FaTachometerAlt className="me-2" /> Dashboard
+                            </Nav.Link>
+                        )}
 
                         <Nav.Link as={Link} to="events" className="nav-link text-white py-3 px-3 rounded shadow-sm mb-2 d-flex align-items-center sidebar-item">
                             <FaCalendarAlt className="me-2" /> Events
