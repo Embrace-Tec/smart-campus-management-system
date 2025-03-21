@@ -44,13 +44,16 @@ export const updateUser = async (userID, userData) => {
 
 export const deleteUser = async (userID) => {
     try {
-        const response = await axios.delete(`${API_BASE_URL}/users/${userID}`);
+        const response = await axios.delete(`${API_BASE_URL}/auth`, {
+            params: { id: userID } // Send userID as a query parameter
+        });
         return response.data;
     } catch (error) {
         console.error("Error deleting user:", error);
         throw error;
     }
 };
+
 
 
 export const getAllUsersIdAndName = async () => {

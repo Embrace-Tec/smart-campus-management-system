@@ -39,6 +39,16 @@ public class AuthController {
         }
     }
 
+    @DeleteMapping
+    public ResponseEntity<?> deleteUser(@RequestParam Long id) {
+        try {
+            authService.deleteUser(id);
+            return ResponseEntity.ok().body("User deleted successfully!");
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Failed to delete user: " + e.getMessage());
+        }
+    }
+
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
         try {

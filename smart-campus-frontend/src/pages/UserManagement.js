@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Container, Row, Col, Form, Button, ListGroup, Alert, Nav, Modal } from "react-bootstrap";
 import { FaTrash, FaEdit, FaEye, FaPlus, FaList } from "react-icons/fa";
-import {addUser, getAllUsers, updateUser} from "../service/UserManagementService";
+import {addUser, getAllUsers, updateUser,deleteUser} from "../service/UserManagementService";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -93,11 +93,17 @@ const UserManagement = () => {
         }
     };
 
-    const handleDeleteUser = (userID) => {
-        const updatedUsers = users.filter((user) => user.userID !== userID);
-        setUsers(updatedUsers);
-        toast.success("User deleted.");
+    const handleDeleteUser = async (id) => {
+        try {
+            await deleteUser(id);
+            setUsers((prevUsers) => prevUsers.filter((user) => user.id !== id));
+            toast.success("User deleted.");
+        } catch (error) {
+            toast.error("Failed to delete user.");
+            console.error("Error deleting user:", error);
+        }
     };
+
 
     const handleEditUser = (user) => {
         setName(user.name);
@@ -155,7 +161,7 @@ const UserManagement = () => {
                     ) : (
                         <ListGroup className="shadow-sm rounded">
                             {users.map((user) => (
-                                <ListGroup.Item key={user.userID} className="d-flex justify-content-between align-items-center bg-dark text-light border-secondary">
+                                <ListGroup.Item key={user.id} className="d-flex justify-content-between align-items-center bg-dark text-light border-secondary">
                                     <div>
                                         <strong>{user.name}</strong>
                                         <br />
@@ -172,7 +178,7 @@ const UserManagement = () => {
                                         <Button variant="outline-warning" size="sm" className="me-2" onClick={() => handleEditUser(user)}>
                                             <FaEdit />
                                         </Button>
-                                        <Button variant="outline-danger" size="sm" onClick={() => handleDeleteUser(user.userID)}>
+                                        <Button variant="outline-danger" size="sm" onClick={() => handleDeleteUser(user.id)}>
                                             <FaTrash />
                                         </Button>
                                     </div>
